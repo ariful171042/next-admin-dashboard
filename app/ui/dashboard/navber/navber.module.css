@@ -32,9 +32,7 @@
   background-color: transparent;
   border: none;
   color: var(--text);
-}
-.input:focus {
-  display: none;
+  outline: none;
 }
 
 .icons {
