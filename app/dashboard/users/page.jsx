@@ -5,10 +5,10 @@ import Link from "next/link";
 import Image from "next/image.js";
 import { fetchUsers } from "../../lib/data";
 
-const UserPage = async () => {
-  const users = await fetchUsers();
-
-  console.log(users);
+const UserPage = async ({ searchParams }) => {
+  const q = searchParams?.q || "";
+  const page = searchParams?.page || 1;
+  const { users, count } = await fetchUsers(q, page);
 
   return (
     <div className={styles.container}>
@@ -67,7 +67,7 @@ const UserPage = async () => {
         </tbody>
       </table>
 
-      <Paginations />
+      <Paginations count={count} />
     </div>
   );
 };
