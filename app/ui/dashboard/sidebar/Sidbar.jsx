@@ -10,6 +10,7 @@ import {
   MdHelpCenter,
   MdLogout,
 } from "react-icons/md";
+import { auth, signOut } from "../../../auth";
 import styles from "./sidebar.module.css";
 
 import MenuLink from "./menuLink/MenuLink";
@@ -78,7 +79,8 @@ const menuItems = [
   },
 ];
 
-const Sidbar = () => {
+const Sidbar = async () => {
+  const { user } = await auth();
   return (
     <div className={styles.container}>
       <div className={styles.user}>
@@ -90,7 +92,7 @@ const Sidbar = () => {
           className={styles.userImage}
         />
         <div className={styles.userDetals}>
-          <span className={styles.userName}>Ariful Islam</span>
+          <span className={styles.userName}>{user.username}</span>
           <span className={styles.userTitle}>Admin</span>
         </div>
       </div>
@@ -104,9 +106,16 @@ const Sidbar = () => {
           </li>
         ))}
       </ul>
-      <button className={styles.logout}>
-        <MdLogout /> Logout
-      </button>
+      <form
+        action={async () => {
+          "use server";
+          await signOut();
+        }}>
+        <button className={styles.logout}>
+          <MdLogout />
+          Logout
+        </button>
+      </form>
     </div>
   );
 };
