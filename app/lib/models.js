@@ -32,6 +32,9 @@ const userSchema = new mongoose.Schema(
     phone: {
       type: Number,
     },
+    address: {
+      type: String,
+    },
   },
   {
     timestamps: true,
@@ -58,15 +61,19 @@ const productSchema = new mongoose.Schema(
       required: true,
       min: 0,
     },
+    category: {
+      type: String,
+      required: true,
+    },
     img: {
       type: String,
     },
 
     color: {
-      type: Number,
+      type: String,
     },
     size: {
-      type: Number,
+      type: String,
     },
   },
   {

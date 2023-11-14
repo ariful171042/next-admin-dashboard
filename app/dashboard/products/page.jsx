@@ -4,11 +4,12 @@ import Link from "next/link";
 import Paginations from "../../ui/dashboard/paginations/Pagination.jsx";
 import Search from "../../ui/dashboard/search/Search";
 import { fetchProducts } from "../../lib/data.js";
+import { deleteProduct } from "../../lib/actions";
 
 const Products = async ({ searchParams }) => {
   const q = searchParams?.q || "";
   const page = searchParams?.page || 1;
-  const { products, count } = await fetchProducts(q, page);
+  const { products = "", count } = await fetchProducts(q, page);
   return (
     <div className={styles.container}>
       <div className={styles.top}>
@@ -24,12 +25,13 @@ const Products = async ({ searchParams }) => {
             <td>Drescription</td>
             <td>price</td>
             <td>stock</td>
+            <td>Category</td>
             <td>Action</td>
           </tr>
         </thead>
         <tbody>
           {products?.map((product) => (
-            <tr>
+            <tr key={product.id}>
               <td>
                 <div className={styles.product}>
                   <Image
@@ -45,6 +47,7 @@ const Products = async ({ searchParams }) => {
               <td>{product.desc}</td>
               <td>{product.price}</td>
               <td>{product.stock}</td>
+              <td>{product?.category}</td>
               <td>
                 <div className={styles.buttons}>
                   <Link href={`/dashboard/products/${product.id}`}>
@@ -52,9 +55,12 @@ const Products = async ({ searchParams }) => {
                       View
                     </button>
                   </Link>
-                  <button className={`${styles.button} ${styles.delete}`}>
-                    Delete
-                  </button>
+                  <form action={deleteProduct}>
+                    <input type="hidden" name="id" value={product.id} />
+                    <button className={`${styles.button} ${styles.delete}`}>
+                      Delete
+                    </button>
+                  </form>
                 </div>
               </td>
             </tr>

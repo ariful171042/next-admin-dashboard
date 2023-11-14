@@ -4,6 +4,7 @@ import Search from "../../ui/dashboard/search/Search.jsx";
 import Link from "next/link";
 import Image from "next/image.js";
 import { fetchUsers } from "../../lib/data";
+import { deleteUser } from "../../lib/actions.js";
 
 const UserPage = async ({ searchParams }) => {
   const q = searchParams?.q || "";
@@ -33,12 +34,12 @@ const UserPage = async ({ searchParams }) => {
 
         <tbody>
           {users?.map((user) => (
-            <tr>
+            <tr key={user.id}>
               <td>
                 <div className={styles.user}>
                   <Image
-                    src={user.img || "/noavatar.png"}
-                    alt=" "
+                    src={user?.img || "/noavatar.png"}
+                    alt={""}
                     width={40}
                     height={40}
                     className={styles.userImage}
@@ -47,7 +48,7 @@ const UserPage = async ({ searchParams }) => {
                 </div>
               </td>
               <td>{user.email}</td>
-              <td>{user.createdAt}</td>
+              <td>{user.createdAt?.toString().slice(4, 16)}</td>
               <td>{user.isAdmin ? "Admin" : "Client"}</td>
               <td>{user.isActive ? "active" : "passive"}</td>
               <td>
@@ -57,9 +58,12 @@ const UserPage = async ({ searchParams }) => {
                       View
                     </button>
                   </Link>
-                  <button className={`${styles.button} ${styles.delete}`}>
-                    Delete
-                  </button>
+                  <form action={deleteUser}>
+                    <input type="hidden" name="id" value={user.id} />
+                    <button className={`${styles.button} ${styles.delete}`}>
+                      Delete
+                    </button>
+                  </form>
                 </div>
               </td>
             </tr>
